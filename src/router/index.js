@@ -24,7 +24,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if (to.path === '/login' || to.path === '/register' || to.path === '/forget' || to.path === '/logout') {
+    if (to.path === '/login' || to.path === '/reg' || to.path === '/forget' || to.path === '/logout') {
         next();
     } else {
         // let stores = store;

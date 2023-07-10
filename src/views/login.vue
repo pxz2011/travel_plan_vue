@@ -57,12 +57,10 @@ export default {
           ElMessage.error("登录失败!")
         }
       });
-
-
     },
     doSignUp: function () {
       console.log("去注册")
-      router.push("/reg")
+      window.location.replace("/reg")
     }
   }
 }
