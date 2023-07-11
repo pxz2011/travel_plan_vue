@@ -8,7 +8,8 @@
         <input type="text" name="phoneNum" placeholder="手机号" class="input-item" v-model="this.phoneNum">
         <input type="text" name="email" placeholder="邮箱号" class="input-item" v-model="this.email">
         <input type="password" name="repassword" placeholder="再次确认密码" class="input-item" v-model="this.cPassword">
-        <el-button type="primary" @click="this.doSubmit">注册</el-button>
+        <el-button type="warning" @click="this.doSubmit">注册</el-button>
+        <el-button type="primary" @click="this.toLogin">登录</el-button>
       </div>
     </div>
   </div>
@@ -31,6 +32,9 @@ export default {
     }
   },
   methods: {
+    toLogin: function () {
+      router.push("/login")
+    },
     doSubmit: function () {
       console.log("注册")
       if (this.email === "" && this.userName === "" && this.password === "" && this.cPassword === "" && this.phoneNum === "") {

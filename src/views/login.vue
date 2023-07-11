@@ -3,10 +3,10 @@
     <div class="login-wrapper">
       <div class="header">Login</div>
       <div class="form-wrapper">
-        <input type="text" name="username" placeholder="username" class="input-item" v-model="uname">
-        <input type="password" name="password" placeholder="password" class="input-item" @keyup.enter="doSubmit"
+        <input type="text" name="username" placeholder="用户名" class="input-item" v-model="uname">
+        <input type="password" name="password" placeholder="密码" class="input-item" @keyup.enter="doSubmit"
                v-model="password">
-        <el-button type="primary" @click="doSubmit">登录</el-button>
+        <el-button type="warning" @click="doSubmit">登录</el-button>
         <el-button type="primary" @click="doSignUp">注册</el-button>
       </div>
     </div>
