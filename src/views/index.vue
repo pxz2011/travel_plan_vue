@@ -1,64 +1,66 @@
 <template>
+  <el-pagination
+      background
+      class="paginationClass"
+      v-model:total="this.total"
+      v-model:page-size='this.pageSize'
+      v-model:current-page="this.pageNum"
+      :page-sizes="[5,10,15,20]"
+      @size-change="handlerSizeChange"
+      @current-change="handleCurrentChange"
+      layout="total, sizes, prev, pager, next, jumper"
+  />
   <div class="d2">
     <el-button
         class="btn1"
         type="primary" size="small" style="float:right"
         @click="logout">登出
     </el-button>
+
   </div>
-  <el-pagination v-model:currentPage="currentPage" :page-sizes="[5,10,15,20]"
-                 layout=" prev, pager, next, jumper,total, sizes," :total="400" @size-change="handlerSizeChange"
-                 @current-change="handleCurrentChange"/>
-  <el-table :data="this.tableData" style="width: 100%" max-height="250">
-    <el-table-column fixed prop="time" label="时间" width="150"/>
-    <el-table-column prop="thing" label="计划" width="120"/>
-    <el-table-column prop="place" label="地点" width="120"/>
-    <el-table-column fixed="right" label="Operations" width="120">
-      <template #default="scope">
-        <el-button
-            link
-            type="primary"
-            size="small"
-            @click.prevent="deleteRow(scope.$index)"
-        >
-          Remove
-        </el-button>
-      </template>
-    </el-table-column>
+  <el-table :data="tableData" style="width: 100%">
+    <el-table-column prop="time" label="time" width="180"/>
+    <el-table-column prop="thing" label="thing" width="180"/>
+    <el-table-column prop="place" label="place"/>
   </el-table>
-  <el-button class="mt-4" style="width: 100%" @click="onAddItem"
-  >Add Item
-  </el-button
-  >
-
 </template>
-
 <script lang="js">
 import axios from "axios";
 import {ElMessage} from "element-plus";
 import router from "../router/index";
 
 export default {
-
   name: "index",
+
   data: function () {
     return {
       pageNum: 1,
       pageSize: 5,
-      tableData: []
+      total: 0,
+      tableData:[{
+
+      }]
     }
   },
-  mounted() {
-    this.loadPage(this.pageNum,this.pageSize)
+  created: function () {
+    this.loadPage(this.pageNum, this.pageSize)
+    console.log(this.tableData)
   },
+  // mounted() {
+  //   this.timer = null;
+  //   clearInterval(this.timer)
+  //   this.timer = setInterval(() => {
+  //     this.loadPage(this.pageNum,this.pageSize)
+  //   }, 5000)
+  // },
   methods: {
     handlerSizeChange: function (val) {
-      console.log("每页数量:$val")
+      console.log("每页数量:" + val)
       this.pageSize = val
       this.loadPage(this.pageNum, this.pageSize)
     },
     handleCurrentChange: function (val) {
-      console.log(val)
+      console.log("当前页:" + val)
       this.pageNum = val;
       this.loadPage(this.pageNum, this.pageSize)
 
@@ -110,6 +112,9 @@ export default {
         }
       }).then(resp => {
         console.log(resp)
+        this.tableData = resp.data.data.records
+        this.total = resp.data.data.total
+        console.log(this.tableData)
       });
     }
   }
@@ -130,5 +135,14 @@ export default {
   position: relative;
   right: 5px;
   top: 5px;
+}
+
+
+.paginationClass {
+  position: fixed;
+  bottom: 0;
+  height: 40px;
+  width: 100%;
+  text-align: center;
 }
 </style>
