@@ -5,11 +5,24 @@
       v-model:total="this.total"
       v-model:page-size='this.pageSize'
       v-model:current-page="this.pageNum"
-      :page-sizes="[5,10,15,20]"
+      :page-sizes="[5,10,15]"
       @size-change="handlerSizeChange"
       @current-change="handleCurrentChange"
       layout="total, sizes, prev, pager, next, jumper"
   />
+  <el-form-item prop="email-code" :inline="true">
+    <el-input
+        ref="authCode"
+        tabindex="2"
+        style="width:100px"
+        class="input-with-select"
+        @keyup.enter.native="loadPage(this.pageNum,this.pageSize,this.cond)"
+        v-model="this.cond"
+    >
+
+    </el-input>
+    <el-button @click="loadPage(this.pageNum,this.pageSize,this.cond)" type="primary" :disabled="isDisabled">查询</el-button>
+  </el-form-item>
   <div class="d2">
     <el-button
         class="btn1"
@@ -39,7 +52,8 @@ export default {
       total: 0,
       tableData:[{
 
-      }]
+      }],
+      cond:""//查询条件
     }
   },
   created: function () {
@@ -98,14 +112,15 @@ export default {
         }
       })
     },
-    loadPage(pageNum, pageSize) {
+    loadPage(pageNum, pageSize,cond) {
       let url = 'http://localhost:8080/plan/page';
       axios.get(url, {
         params: {
           // pageNum:this.pageNum,
           // pageSize:this.pageSize
           pageNum,
-          pageSize
+          pageSize,
+          cond
         },
         headers: {
           'token': localStorage.getItem('token')
