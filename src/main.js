@@ -5,7 +5,7 @@ import store from './store'
 import 'element-plus/dist/index.css'
 import ElementPlus from 'element-plus'
 import axios from 'axios'
-axios.defaults.headers.post['Contenst-Type'] = 'application/json;'
+axios.defaults.headers.post['Content-Type'] = 'application/json;'
   // 在header中添加token
 const app = createApp(App)
 app.use(store)
