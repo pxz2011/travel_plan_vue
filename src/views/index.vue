@@ -94,13 +94,16 @@ export default {
       console.log("当前行id为:" + id);
       axios({
         method: 'delete',
-        url: "http://localhost:8080/plan/" + id
+        url: "http://localhost:8080/plan/" + id,
+        headers:{
+          'token':localStorage.getItem('token')
+        }
       }).then(res => {
         if (res.data.code === 1) {
           ElMessage.success("删除成功!")
           router.go(0)
         } else {
-          ElMessage.error("删除失败,")
+          ElMessage.error("删除失败,"+res.data.msg)
         }
       })
     },
@@ -166,10 +169,16 @@ export default {
         }
       }).then(resp => {
         console.log(resp)
-        this.tableData = resp.data.data.records
-        this.total = parseInt(resp.data.data.total)
-        this.current = parseInt(resp.data.data.current)
-        console.log(this.tableData)
+        if (resp.data.code !== 0){
+          this.tableData = resp.data.data.records
+          this.total = parseInt(resp.data.data.total)
+          this.current = parseInt(resp.data.data.current)
+          console.log(this.tableData)
+        }
+        else{
+          ElMessage.error(resp.data.msg)
+        }
+
       });
     }
   }
