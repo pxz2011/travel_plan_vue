@@ -149,7 +149,7 @@ body {
   outline: none;
 }
 
-.input-item:placeholder {
+.input-item::placeholder {
   text-transform: uppercase;
 }
 
