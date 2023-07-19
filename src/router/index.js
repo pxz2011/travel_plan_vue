@@ -18,8 +18,13 @@ const routes = [
     },
     {
         path: '/add',
-        name:'add',
+        name: 'add',
         component: () => import("@/views/add")
+    },
+    {
+        path: "/user",
+        name: 'user',
+        component: () => import("@/views/user")
     }
 ]
 

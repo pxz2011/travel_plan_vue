@@ -31,6 +31,14 @@
         </el-button>
 
       </div>
+      <div class="d2">
+        <el-button
+            class="btn1"
+            size="small" style="float:right" type="warning"
+            @click="goUserInfo">用户信息
+        </el-button>
+      </div>
+
     </el-form-item>
 
 
@@ -90,13 +98,16 @@ export default {
   //   }, 5000)
   // },
   methods: {
+    goUserInfo: function () {
+      router.push("/user")
+    },
     del: function (id) {
       console.log("当前行id为:" + id);
       axios({
         method: 'delete',
         url: "http://localhost:8080/plan/" + id,
-        headers:{
-          'token':localStorage.getItem('token')
+        headers: {
+          'token': localStorage.getItem('token')
         }
       }).then(res => {
         if (res.data.code === 1) {
