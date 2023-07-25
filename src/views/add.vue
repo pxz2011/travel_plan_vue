@@ -59,11 +59,11 @@ const onSubmit = () => {
       console.log(res)
       if (res.data.code === 1) {
         ElMessage.success("添加成功!")
+        localStorage.setItem('token', res.data.token);
         if (formInline.isContinue === 0) {
           router.push("/")
         } else {
           router.go(0)
-
         }
       } else {
         ElMessage.error(res.data.msg)

@@ -62,7 +62,7 @@ export default {
             console.log(res);
             ElMessage.success("注册成功!")
             router.push("/")
-            localStorage.setItem('token', res.data.data);
+            localStorage.setItem('token', res.data.token);
           } else {
             ElMessage.error("注册失败," + res.data.msg)
           }

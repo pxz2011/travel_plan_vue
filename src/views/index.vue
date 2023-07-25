@@ -111,6 +111,7 @@ export default {
         }
       }).then(res => {
         if (res.data.code === 1) {
+          localStorage.setItem('token', res.data.token);
           ElMessage.success("删除成功!")
           router.go(0)
         } else {
@@ -131,22 +132,6 @@ export default {
     },
     goAdd: function () {
       router.push("/add")
-    },
-    list: function () {
-      axios({
-        method: 'get',
-        url: 'http://localhost:8080/user/list',
-        headers: {
-          'token': localStorage.getItem("token")
-        }
-      }).then(function (res) {
-        if (res.data.code === 1) {
-          const msg = JSON.stringify(res.data.data)
-          ElMessage.success(msg)
-        } else {
-          console.log(res.data.msg)
-        }
-      })
     },
     logout: function () {
       axios({
@@ -184,6 +169,7 @@ export default {
           this.tableData = resp.data.data.records
           this.total = parseInt(resp.data.data.total)
           this.current = parseInt(resp.data.data.current)
+          localStorage.setItem('token', resp.data.token);
           console.log(this.tableData)
         }
         else{

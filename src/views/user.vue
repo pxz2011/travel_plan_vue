@@ -91,7 +91,7 @@ export default {
       }).then(res => {
         if (res.data.code === 1) {
           ElMessage.success("修改用户信息成功!");
-          localStorage.setItem("token", res.data.data)
+          localStorage.setItem('token', res.data.token);
           router.push("/")
         } else {
           ElMessage.error("修改用户信息失败!")

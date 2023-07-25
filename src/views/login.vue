@@ -51,7 +51,7 @@ export default {
           console.log(res);
           ElMessage.success("登录成功!")
           router.push("/")
-          localStorage.setItem('token', res.data.data);
+          localStorage.setItem('token', res.data.token);
         } else {
           console.log(res)
           ElMessage.error("登录失败!")
