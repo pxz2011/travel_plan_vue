@@ -20,8 +20,8 @@
       <el-input v-model="formInline.remark" placeholder="备注" clearable/>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="onSubmit">添加</el-button>
-      <el-button type="warning" @click="goContinue()">继续添加</el-button>
+      <el-button type="primary" @click="doSubmit(formInline)">添加</el-button>
+      <el-button type="warning" @click="goContinue(formInline)">继续添加</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -29,9 +29,7 @@
 <script lang="js" setup>
 
 import {reactive} from 'vue'
-import axios from "axios";
-import {ElMessage} from "element-plus";
-import router from "@/router";
+import {doSubmit, goContinue} from "@/api/add"
 
 const formInline = reactive({
   thing: '',
@@ -40,45 +38,7 @@ const formInline = reactive({
   isContinue: 0,
   remark: ""
 })
-const onSubmit = () => {
-  console.log('isContinue='+formInline.isContinue)
-  if (formInline.time != null && formInline.place != null && formInline.thing != null && formInline.thing !== "" && formInline.place !== "" && formInline.time !== "" ) {
-    axios({
-      url: 'http://localhost:8080/plan/save',
-      data: {
-        'thing': formInline.thing,
-        'time': formInline.time,
-        'place': formInline.place,
-        'remark':formInline.remark
-      },
-      headers: {
-        'token': localStorage.getItem('token')
-      },
-      method: 'put'
-    }).then(res => {
-      console.log(res)
-      if (res.data.code === 1) {
-        ElMessage.success("添加成功!")
-        localStorage.setItem('token', res.data.token);
-        if (formInline.isContinue === 0) {
-          router.push("/")
-        } else {
-          router.go(0)
-        }
-      } else {
-        ElMessage.error(res.data.msg)
-      }
-    })
-  } else {
-    ElMessage.error("清输入全部信息!")
-  }
-}
-const goContinue = () => {
-  formInline.isContinue = 1
 
-  onSubmit()
-
-}
 
 </script>
 <style>

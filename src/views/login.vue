@@ -1,31 +1,22 @@
 <template xmlns="http://www.w3.org/1999/html">
   <div class="container">
     <div class="login-wrapper">
-      <div class="header">Login</div>
+      <div class="header">登录</div>
       <div class="form-wrapper">
         <input type="text" name="username" placeholder="用户名" class="input-item" v-model="uname">
-        <input type="password" name="password" placeholder="密码" class="input-item" @keyup.enter="doSubmit"
+        <input class="input-item" name="password" placeholder="密码" type="password"
+               @keyup.enter="doSubmit(this.uname,this.password)"
                v-model="password">
-        <el-button type="warning" @click="doSubmit">登录</el-button>
+        <el-button type="warning" @click="doSubmit(this.uname,this.password)">登录</el-button>
         <el-button type="primary" @click="doSignUp">注册</el-button>
       </div>
     </div>
-    <!--      <el-form-item>-->
-    <!--        <el-button type="primary" style="width: 50%;" @click="doSubmit();">登录</el-button>-->
-    <!--        <br/>-->
-    <!--        <el-button type="warning" style="width: 50%;" @click="doSignUp()">注册</el-button>-->
-
-    <!--      </el-form-item>-->
   </div>
 </template>
 
 <script>
 //导包
-import axios from 'axios'
-import {ElMessage} from 'element-plus'
-import qs from 'qs'
-import router from '@/router'
-
+import {doSignUp, doSubmit} from "@/api/login";
 export default {
   name: "Login",
   data: function () {
@@ -36,32 +27,8 @@ export default {
     }
   },
   methods: {
-    doSubmit: function () {
-      console.log("登录")
-      const url = "http://localhost:8080/user/login";
-      axios({
-        method: 'post',
-        url: url,
-        data: {
-          userName: this.uname,
-          password: this.password
-        },
-      }).then(function (res) {
-        if (res.data.code === 1) {
-          console.log(res);
-          ElMessage.success("登录成功!")
-          router.push("/")
-          localStorage.setItem('token', res.data.token);
-        } else {
-          console.log(res)
-          ElMessage.error("登录失败!")
-        }
-      });
-    },
-    doSignUp: function () {
-      console.log("去注册")
-      window.location.replace("/reg")
-    }
+    doSignUp,
+    doSubmit,
   }
 }
 </script>
@@ -113,16 +80,15 @@ body {
   outline: none;
 }
 
-.input-item:placeholder {
+.input-item::placeholder {
   text-transform: uppercase;
 }
 
 .btn {
   text-align: center;
   padding: 10px;
-  margin: 0 auto;
   width: 100%;
-  margin-top: 40px;
+  margin: 40px auto 0;
   background-image: linear-gradient(to right, #a6c1ee, #fbc2eb);
   color: #fff;
 }
@@ -138,6 +104,3 @@ a {
 }
 
 </style>
-————————————————
-版权声明：本文为CSDN博主「good_good_study5」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
-原文链接：https://blog.csdn.net/good_good_study5/article/details/128840921

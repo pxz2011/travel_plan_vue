@@ -20,7 +20,7 @@
           :page-size="pageSize"
           :page-sizes="[5,10,15]"
           :current-page="current"
-          @size-change="handlerSizeChange"
+          @size-change="handleSizeChange"
           @current-change="handleCurrentChange">
       </el-pagination>
       <div class="d2">
@@ -67,12 +67,7 @@
 
 </template>
 <script>
-import {reactive} from "vue";
-import axios from "axios";
-import {ElMessage} from "element-plus";
-import router from "../router/index";
-
-
+import {del, goAdd, goUserInfo, handleCurrentChange, handleSizeChange, loadPage, logout} from "@/api";
 export default {
   name: "index",
 
@@ -83,101 +78,22 @@ export default {
       tableData: [{}],
       total: 0,
       cond: "",//查询条件
-      current:0
+      current: 0
     }
   },
   mounted: function () {
     this.loadPage(this.pageNum, this.pageSize, this.cond)
     console.log(this.tableData)
   },
-  // mounted() {
-  //   this.timer = null;
-  //   clearInterval(this.timer)
-  //   this.timer = setInterval(() => {
-  //     this.loadPage(this.pageNum,this.pageSize)
-  //   }, 5000)
-  // },
   methods: {
-    goUserInfo: function () {
-      router.push("/user")
-    },
-    del: function (id) {
-      console.log("当前行id为:" + id);
-      axios({
-        method: 'delete',
-        url: "http://localhost:8080/plan/" + id,
-        headers: {
-          'token': localStorage.getItem('token')
-        }
-      }).then(res => {
-        if (res.data.code === 1) {
-          localStorage.setItem('token', res.data.token);
-          ElMessage.success("删除成功!")
-          router.go(0)
-        } else {
-          ElMessage.error("删除失败,"+res.data.msg)
-        }
-      })
-    },
-    handlerSizeChange: function (val) {
-      console.log("每页数量:" + val)
-      this.pageSize = val
-      this.loadPage(this.pageNum, this.pageSize, this.cond)
-    },
-    handleCurrentChange: function (val) {
-      console.log("当前页:" + val)
-      this.pageNum = val;
-      this.loadPage(this.pageNum, this.pageSize, this.cond)
+    handleSizeChange,
+    loadPage,
+    handleCurrentChange,
+    logout,
+    goUserInfo,
+    del,
+    goAdd
 
-    },
-    goAdd: function () {
-      router.push("/add")
-    },
-    logout: function () {
-      axios({
-        method: 'post',
-        url: 'http://localhost:8080/user/logout',
-        headers: {
-          'token': localStorage.getItem("token")
-        }
-      }).then(function (res) {
-        if (res.data.code === 1) {
-          ElMessage.success("登出成功!")
-          localStorage.removeItem('token')
-          router.push('/login')
-        } else {
-          ElMessage.error(res.data.msg)
-        }
-      })
-    },
-    loadPage(pageNum, pageSize, cond) {
-      let url = 'http://localhost:8080/plan/page';
-      axios.get(url, {
-        params: {
-          // pageNum:this.pageNum,
-          // pageSize:this.pageSize
-          pageNum,
-          pageSize,
-          cond
-        },
-        headers: {
-          'token': localStorage.getItem('token')
-        }
-      }).then(resp => {
-        console.log(resp)
-        if (resp.data.code !== 0){
-          this.tableData = resp.data.data.records
-          this.total = parseInt(resp.data.data.total)
-          this.current = parseInt(resp.data.data.current)
-          localStorage.setItem('token', resp.data.token);
-          console.log(this.tableData)
-        }
-        else{
-          ElMessage.error(resp.data.msg)
-        }
-
-      });
-    }
   }
 }
 </script>
